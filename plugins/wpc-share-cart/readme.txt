@@ -3,8 +3,8 @@ Contributors: wpclever
 Donate link: https://wpclever.net
 Tags: woocommerce, woo, wpc, share, cart
 Requires at least: 4.0
-Tested up to: 6.3
-Stable tag: 1.2.5
+Tested up to: 6.4
+Stable tag: 1.2.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,6 +59,15 @@ Especially, when combined with [WPC Smart Quick View](https://wordpress.org/plug
 4. Go to WP-admin > WPClever > Share Cart to configure
 
 == Changelog ==
+
+= 1.2.8 =
+* Fixed: Compatible with WP 6.4 & Woo 8.4
+
+= 1.2.7 =
+* Updated: Optimized the code
+
+= 1.2.6 =
+* Fixed: Compatible with WP 6.3 & Woo 8.0
 
 = 1.2.5 =
 * Fixed: CSRF vulnerability

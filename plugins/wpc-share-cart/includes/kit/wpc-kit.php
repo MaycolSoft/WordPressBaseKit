@@ -55,10 +55,10 @@ if ( ! class_exists( 'WPCleverKit' ) ) {
 				deactivate_plugins( $_GET['plugin'], '', false, true );
 			}
 			?>
-			<div class="wpclever_page wpclever_essential_kit_page wrap">
-				<h1 style="margin-bottom: 20px">WPClever | Essential Kit</h1>
-				<div class="wp-list-table widefat plugin-install-network wpclever_essential_kit_wrapper"></div>
-			</div>
+            <div class="wpclever_page wpclever_essential_kit_page wrap">
+                <h1 style="margin-bottom: 20px">WPClever | Essential Kit</h1>
+                <div class="wp-list-table widefat plugin-install-network wpclever_essential_kit_wrapper"></div>
+            </div>
 			<?php
 		}
 
@@ -131,57 +131,57 @@ if ( ! class_exists( 'WPCleverKit' ) ) {
 
 					$details_link = network_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=' . $plugin['slug'] . '&amp;TB_iframe=true&amp;width=600&amp;height=550' );
 					?>
-					<div class="plugin-card <?php echo esc_attr( $plugin_slug ); ?>" id="<?php echo esc_attr( $plugin_slug ); ?>">
-						<div class="plugin-card-top">
-							<a href="<?php echo esc_url( $details_link ); ?>" class="thickbox" title="<?php echo esc_attr( $plugin['name'] ); ?>">
-								<img src="<?php echo esc_url( 'https://api.wpclever.net/images/' . $plugin_slug . '.png' ); ?>" class="plugin-icon" alt="<?php echo esc_attr( $plugin['name'] ); ?>"/>
-							</a>
-							<div class="name column-name">
-								<h3>
-									<a class="thickbox" title="<?php echo esc_attr( $plugin['name'] ); ?>" href="<?php echo esc_url( $details_link ); ?>">
+                    <div class="plugin-card <?php echo esc_attr( $plugin_slug ); ?>" id="<?php echo esc_attr( $plugin_slug ); ?>">
+                        <div class="plugin-card-top">
+                            <a href="<?php echo esc_url( $details_link ); ?>" class="thickbox" title="<?php echo esc_attr( $plugin['name'] ); ?>">
+                                <img src="<?php echo esc_url( 'https://api.wpclever.net/images/' . $plugin_slug . '.png' ); ?>" class="plugin-icon" alt="<?php echo esc_attr( $plugin['name'] ); ?>"/>
+                            </a>
+                            <div class="name column-name">
+                                <h3>
+                                    <a class="thickbox" title="<?php echo esc_attr( $plugin['name'] ); ?>" href="<?php echo esc_url( $details_link ); ?>">
 										<?php echo esc_html( $plugin['name'] ); ?>
-									</a>
-								</h3>
-							</div>
-							<div class="action-links">
-								<ul class="plugin-action-buttons">
-									<li>
+                                    </a>
+                                </h3>
+                            </div>
+                            <div class="action-links">
+                                <ul class="plugin-action-buttons">
+                                    <li>
 										<?php if ( $this->is_plugin_installed( $plugin_slug, $plugin_file ) ) {
 											if ( $this->is_plugin_active( $plugin_slug, $plugin_file ) ) {
 												?>
-												<a href="<?php echo esc_url( $this->deactivate_plugin_link( $plugin_slug, $plugin_file ) ); ?>" class="button deactivate-now">
+                                                <a href="<?php echo esc_url( $this->deactivate_plugin_link( $plugin_slug, $plugin_file ) ); ?>" class="button deactivate-now">
 													<?php esc_html_e( 'Deactivate', 'wpc-kit' ); ?>
-												</a>
+                                                </a>
 												<?php
 											} else {
 												?>
-												<a href="<?php echo esc_url( $this->activate_plugin_link( $plugin_slug, $plugin_file ) ); ?>" class="button activate-now">
+                                                <a href="<?php echo esc_url( $this->activate_plugin_link( $plugin_slug, $plugin_file ) ); ?>" class="button activate-now">
 													<?php esc_html_e( 'Activate', 'wpc-kit' ); ?>
-												</a>
+                                                </a>
 												<?php
 											}
 										} else { ?>
-											<a href="<?php echo esc_url( $this->install_plugin_link( $plugin_slug ) ); ?>" class="button install-now">
+                                            <a href="<?php echo esc_url( $this->install_plugin_link( $plugin_slug ) ); ?>" class="button install-now">
 												<?php esc_html_e( 'Install Now', 'wpc-kit' ); ?>
-											</a>
+                                            </a>
 										<?php } ?>
-									</li>
-									<li>
-										<a href="<?php echo esc_url( $details_link ); ?>" class="thickbox open-plugin-details-modal" aria-label="<?php echo esc_attr( sprintf( esc_html__( 'More information about %s', 'wpc-kit' ), $plugin['name'] ) ); ?>" title="<?php echo esc_attr( $plugin['name'] ); ?>">
+                                    </li>
+                                    <li>
+                                        <a href="<?php echo esc_url( $details_link ); ?>" class="thickbox open-plugin-details-modal" aria-label="<?php echo esc_attr( sprintf( esc_html__( 'More information about %s', 'wpc-kit' ), $plugin['name'] ) ); ?>" title="<?php echo esc_attr( $plugin['name'] ); ?>">
 											<?php esc_html_e( 'More Details', 'wpc-kit' ); ?>
-										</a>
-									</li>
-								</ul>
-							</div>
-							<div class="desc column-description">
-								<p><?php echo esc_html( isset( $plugin['short_description'] ) ? $plugin['short_description'] : '' ); ?></p>
-							</div>
-						</div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="desc column-description">
+                                <p><?php echo esc_html( isset( $plugin['short_description'] ) ? $plugin['short_description'] : '' ); ?></p>
+                            </div>
+                        </div>
 						<?php
 						echo '<div class="plugin-card-bottom">';
 
 						if ( isset( $plugin['rating'], $plugin['num_ratings'] ) ) { ?>
-							<div class="vers column-rating">
+                            <div class="vers column-rating">
 								<?php
 								wp_star_rating(
 									[
@@ -191,60 +191,60 @@ if ( ! class_exists( 'WPCleverKit' ) ) {
 									]
 								);
 								?>
-								<span class="num-ratings">(<?php echo esc_html( number_format_i18n( $plugin['num_ratings'] ) ); ?>)</span>
-							</div>
+                                <span class="num-ratings">(<?php echo esc_html( number_format_i18n( $plugin['num_ratings'] ) ); ?>)</span>
+                            </div>
 						<?php }
 
 						if ( isset( $plugin['version'] ) ) { ?>
-							<div class="column-updated">
-								<strong><?php esc_html_e( 'Version:', 'wpc-kit' ); ?></strong>
-								<span><?php echo esc_html( $plugin['version'] ); ?></span>
-							</div>
+                            <div class="column-updated">
+                                <strong><?php esc_html_e( 'Version:', 'wpc-kit' ); ?></strong>
+                                <span><?php echo esc_html( $plugin['version'] ); ?></span>
+                            </div>
 						<?php }
 
 						if ( isset( $plugin['active_installs'] ) ) { ?>
-							<div class="column-downloaded">
+                            <div class="column-downloaded">
 								<?php echo number_format_i18n( $plugin['active_installs'] ) . esc_html__( '+ Active Installations', 'wpc-kit' ); ?>
-							</div>
+                            </div>
 						<?php }
 
 						if ( isset( $plugin['last_updated'] ) ) { ?>
-							<div class="column-compatibility">
-								<strong><?php esc_html_e( 'Last Updated:', 'wpc-kit' ); ?></strong>
-								<span><?php printf( esc_html__( '%s ago', 'wpc-kit' ), esc_html( human_time_diff( $plugin['last_updated'] ) ) ); ?></span>
-							</div>
+                            <div class="column-compatibility">
+                                <strong><?php esc_html_e( 'Last Updated:', 'wpc-kit' ); ?></strong>
+                                <span><?php printf( esc_html__( '%s ago', 'wpc-kit' ), esc_html( human_time_diff( $plugin['last_updated'] ) ) ); ?></span>
+                            </div>
 						<?php }
 
 						echo '</div>';
 
 						if ( $this->is_plugin_installed( $plugin_slug, $plugin_file, true ) ) {
 							?>
-							<div class="plugin-card-bottom premium">
-								<div class="text">
-									<strong>✓ Premium version was installed.</strong>
-								</div>
-								<div class="btn">
+                            <div class="plugin-card-bottom premium">
+                                <div class="text">
+                                    <strong>✓ Premium version was installed.</strong>
+                                </div>
+                                <div class="btn">
 									<?php
 									if ( $this->is_plugin_active( $plugin_slug, $plugin_file, true ) ) {
 										?>
-										<a href="<?php echo esc_url( $this->deactivate_plugin_link( $plugin_slug, $plugin_file, true ) ); ?>" class="button deactivate-now">
+                                        <a href="<?php echo esc_url( $this->deactivate_plugin_link( $plugin_slug, $plugin_file, true ) ); ?>" class="button deactivate-now">
 											<?php esc_html_e( 'Deactivate', 'wpc-kit' ); ?>
-										</a>
+                                        </a>
 										<?php
 									} else {
 										?>
-										<a href="<?php echo esc_url( $this->activate_plugin_link( $plugin_slug, $plugin_file, true ) ); ?>" class="button activate-now">
+                                        <a href="<?php echo esc_url( $this->activate_plugin_link( $plugin_slug, $plugin_file, true ) ); ?>" class="button activate-now">
 											<?php esc_html_e( 'Activate', 'wpc-kit' ); ?>
-										</a>
+                                        </a>
 										<?php
 									}
 									?>
-								</div>
-							</div>
+                                </div>
+                            </div>
 							<?php
 						}
 						?>
-					</div>
+                    </div>
 					<?php
 				}
 			} else {

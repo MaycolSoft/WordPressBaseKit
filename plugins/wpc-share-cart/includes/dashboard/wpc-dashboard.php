@@ -44,23 +44,23 @@ if ( ! class_exists( 'WPCleverDashboard' ) ) {
 		function admin_menu_content() {
 			add_thickbox();
 			?>
-			<div class="wpclever_page wpclever_welcome_page wrap">
-				<h1>WPClever | Make clever moves</h1>
-				<div class="card">
-					<h2 class="title">About</h2>
-					<p>
-						We are a team of passionate developers of plugins for WordPress, whose aspiration is to bring smart utilities and functionalities to life for WordPress users, especially for those on WooCommerce platform. Visit our website:
-						<a href="https://wpclever.net?utm_source=visit&utm_medium=menu&utm_campaign=wporg" target="_blank">https://wpclever.net</a>
-					</p>
-				</div>
-				<div class="card wpclever_plugins">
-					<h2 class="title">Plugins
-						<span class="wpclever_plugins_order"><a href="#" class="wpclever_plugins_order_a" data-o="p">popular</a> |
+            <div class="wpclever_page wpclever_welcome_page wrap">
+                <h1>WPClever | Make clever moves</h1>
+                <div class="card">
+                    <h2 class="title">About</h2>
+                    <p>
+                        We are a team of passionate developers of plugins for WordPress, whose aspiration is to bring smart utilities and functionalities to life for WordPress users, especially for those on WooCommerce platform. Visit our website:
+                        <a href="https://wpclever.net?utm_source=visit&utm_medium=menu&utm_campaign=wporg" target="_blank">https://wpclever.net</a>
+                    </p>
+                </div>
+                <div class="card wpclever_plugins">
+                    <h2 class="title">Plugins
+                        <span class="wpclever_plugins_order"><a href="#" class="wpclever_plugins_order_a" data-o="p">popular</a> |
 						<a href="#" class="wpclever_plugins_order_a" data-o="u">last updated</a></span>
-					</h2>
-					<div class="wpclever_plugins_wrapper"></div>
-				</div>
-			</div>
+                    </h2>
+                    <div class="wpclever_plugins_wrapper"></div>
+                </div>
+            </div>
 			<?php
 		}
 
