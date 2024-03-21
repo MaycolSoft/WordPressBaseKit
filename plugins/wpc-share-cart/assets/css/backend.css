@@ -1,0 +1,146 @@
+.wpcss-quickview-items {
+    max-height: 460px;
+    overflow-y: auto;
+}
+
+.wpcss-quickview-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.wpcss-quickview-items .wpcss-quickview-item:nth-child(2n+1) {
+    background-color: #f6f7f7;
+}
+
+.wpcss-quickview-item > div {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.wpcss-quickview-item-image {
+    width: 80px;
+    flex: 0 0 80px;
+    text-align: center;
+}
+
+.wpcss-quickview-item-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.wpcss-quickview-item-info {
+    flex-grow: 1;
+}
+
+.wpcss-quickview-item-title {
+    font-weight: 600;
+}
+
+.wpcss-quickview-item-title a {
+    text-decoration: none;
+}
+
+.wpcss-quickview-item-data {
+    color: #999999;
+}
+
+.wpcss-quickview-item-data, .wpcss-quickview-item-data a {
+    font-size: 13px;
+}
+
+.wpcss-quickview-item-links {
+    display: none;
+}
+
+.wpcss-quickview-item:hover .wpcss-quickview-item-links {
+    display: inline-block;
+}
+
+/* WPC Dialog */
+
+.ui-dialog.wpc-dialog {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100102;
+    background-color: #fff;
+    border: 1px solid #dfdfdf;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .1);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .1);
+}
+
+.ui-dialog.wpc-dialog .ui-dialog-titlebar {
+    background: #fcfcfc;
+    border-bottom: 1px solid #dfdfdf;
+    height: 36px;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 36px;
+    padding: 0 36px 0 16px
+}
+
+.ui-dialog.wpc-dialog .ui-button.ui-dialog-titlebar-close {
+    background: 0 0;
+    border: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: #666;
+    cursor: pointer;
+    display: block;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    outline: none;
+    overflow: hidden;
+    font-size: 0;
+}
+
+.ui-dialog.wpc-dialog .ui-dialog-titlebar-close:before {
+    font: 400 20px/1 dashicons;
+    vertical-align: top;
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 36px;
+    width: 36px;
+    height: 36px;
+    content: '\f158'
+}
+
+.ui-dialog.wpc-dialog .ui-button.ui-dialog-titlebar-close:hover {
+    color: #00a0d2
+}
+
+.ui-dialog.wpc-dialog .ui-dialog-titlebar-close .ui-button-text {
+    display: none
+}
+
+.ui-dialog.wpc-dialog .ui-dialog-content {
+    padding: 16px;
+    overflow: auto
+}
+
+.ui-dialog.wpc-dialog .ui-dialog-buttonpane {
+    background: #fcfcfc;
+    border-top: 1px solid #dfdfdf;
+    padding: 16px
+}
+
+.ui-dialog.wpc-dialog .ui-dialog-buttonpane .ui-button {
+    margin-left: 16px
+}
+
+.ui-dialog.wpc-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+    float: right
+}
+
+.ui-dialog.wpc-dialog .ui-draggable .ui-dialog-titlebar {
+    cursor: move
+}
