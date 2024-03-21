@@ -8,7 +8,7 @@ Simplemente clona este repositorio en tu entorno de desarrollo local o servidor 
 
 ### Plugins:
 
-- **Plugin1:** [Descripción breve del plugin 1, incluyendo su propósito y funcionalidades clave.]
+- **Plugin1:** [WPC Share Cart for WooCommerce es una herramienta simple pero poderosa que puede ayudar a tus clientes a compartir su carrito de compras.]
 - **Plugin2:** [Descripción breve del plugin 2, incluyendo su propósito y funcionalidades clave.]
 - **Plugin3:** [Descripción breve del plugin 3, incluyendo su propósito y funcionalidades clave.]
 
@@ -33,19 +33,3 @@ Si tienes alguna pregunta o encuentras algún problema, no dudes en abrir un pro
 
 ¡Gracias por utilizar WordPressBaseKit! Esperamos que te sea de gran ayuda en tus proyectos de desarrollo en WordPress.
 
----
-
-Actualmente el plugin que agregaré se llama **WPC Share Cart for WooCommerce**. Esta es la información sobre ella:
-
-- **Plugin Name:** WPC Share Cart for WooCommerce
-- **Plugin URI:** [https://wpclever.net/](https://wpclever.net/)
-- **Description:** WPC Share Cart is a simple but powerful tool that can help your customer share their cart.
-- **Version:** 1.2.8
-- **Author:** WPClever
-- **Author URI:** [https://wpclever.net](https://wpclever.net)
-- **Text Domain:** wpc-share-cart
-- **Domain Path:** /languages/
-- **Requires at least:** 4.0
-- **Tested up to:** 6.4
-- **WC requires at least:** 3.0
-- **WC tested up to:** 8.4
