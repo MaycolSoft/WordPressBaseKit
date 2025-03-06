@@ -25,7 +25,7 @@ function mpa_display_admin_dashboard()
   <div class="wrap">
     <h1>MB Soft Plugin</h1>
     <p>Aquí puedes configurar los ajustes de Mi Plugin.</p>
-    <?php include MPA_PLUGIN_DIR . 'admin/templates/admin-dashboard.php'; ?>
+    <?php include MBSOFT_PLUGIN_DIR . 'admin/templates/admin-dashboard.php'; ?>
   </div>
   <?php
 }

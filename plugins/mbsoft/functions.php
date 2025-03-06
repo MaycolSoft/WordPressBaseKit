@@ -68,13 +68,8 @@ function mpa_delete_folder($folder)
 function mbsoft_shortcode_landing()
 {
     ob_start();
-    include MPA_PLUGIN_DIR . 'public/landing-page.php';
+    include MBSOFT_PLUGIN_DIR . 'public/landing-page.php';
     return ob_get_clean();
 }
-
-
-
-
-
 
 
