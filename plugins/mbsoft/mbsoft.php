@@ -51,6 +51,10 @@ function mbsoft_api_ajax() {
     wp_die();
   }
 
+  if(isset($_POST['file']) && $_POST['file'] === 'createOrUpdateProduct'){
+    require_once MBSOFT_PLUGIN_DIR . 'sub_system/createOrUpdateProduct.php';
+    wp_die();
+  }
 
   require_once MBSOFT_PLUGIN_DIR . 'sub_system/tabla.php';
   wp_die();
@@ -59,5 +63,21 @@ function mbsoft_api_ajax() {
 add_action('wp_ajax_mbsoft_api_ajax', 'mbsoft_api_ajax');
 // add_action('wp_ajax_nopriv_mbsoft_api_ajax', 'mbsoft_api_ajax');
 
+
+
+
+
+
+// function mbsoft_custom_script() {
+//   wp_enqueue_script(
+//     'mbsoft-javascript',  
+//     plugin_dir_url( __FILE__ ) . '/js/database.js',
+//     [], 
+//     true
+//   );
+//   // wp_enqueue_style('mbsoft-style', get_template_directory_uri() . '/style.css');
+// }
+
+// add_action('wp_enqueue_scripts', 'mbsoft_custom_script');
 
 

@@ -1,7 +1,6 @@
 <?php
 
 defined( 'ABSPATH' ) || exit;
-
 class Smart_Manager {
 
 	static $text_domain, $prefix, $sku, $plugin_file, $sm_is_woo44, $sm_is_woo40, $sm_is_woo39, $sm_is_woo36, $sm_is_woo30, $sm_is_woo22, $sm_is_woo21, $sm_is_woo79, $sm_is_wc_hpos_tables_exists = false, $sm_is_woo92;
@@ -199,6 +198,8 @@ class Smart_Manager {
 			}
 		}
 
+		define ( 'SMPRO', true );
+		
 		if ( ! defined( 'SM_PRO_URL' ) ) {
 			define( 'SM_PRO_URL', (dirname ( SM_PLUGIN_FILE )) . '/pro/' );
 		}

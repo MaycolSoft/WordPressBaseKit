@@ -18,8 +18,8 @@ if(!isset($_POST['name'])) {
 $tableName = $_POST['name'];
 $db = new SQLite3($dbPath);
 
-$_POST = file_get_contents('php://input');
-$_POST = json_decode($_POST, true);
+// $_POST = file_get_contents('php://input');
+// $_POST = json_decode($_POST, true);
 
 if(isset($_POST["remove"])){
     require_once "removeRecord.php";
@@ -37,6 +37,13 @@ if(isset($_POST["reUploadImage"]) || isset($_POST["viewUploadedImage"])){
 }
 
 
+
+
+
+
+
+
+
 // Obtiene el esquema de la tabla
 $schema = $db->query("PRAGMA table_info($tableName);");
 $columns = [];
@@ -47,7 +54,11 @@ while ($column = $schema->fetchArray()) {
 
 $where = " WHERE 1=1 ";
 foreach ($_POST as $key => $value) {
-    if(empty(trim($value)) || $key == "inputValue" || $key == "name" ){
+    if(empty(trim($value)) || $key == "inputValue" || $key == "name" || $key == "view" || $key == "action"){
+        continue;
+    }
+
+    if($key == "filters" && $value == "undefined"){
         continue;
     }
 

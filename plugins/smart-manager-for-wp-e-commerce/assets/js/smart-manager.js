@@ -1014,7 +1014,8 @@ Smart_Manager.prototype.setDashboardModel = function (response) {
 			window.smart_manager.firstLoad = false
 		}
 
-		if(window.smart_manager.sm_beta_pro == 1){
+		// if(window.smart_manager.sm_beta_pro == 1){
+		if(true){
 			if((window.smart_manager.loadingDashboardForsavedSearch === true) && (window.smart_manager.hasOwnProperty('savedSearchParams') && window.smart_manager.savedSearchParams)){//set search_params in response when applying saved search to any dashboard.
 				response.search_params =  window.smart_manager.savedSearchParams;
 			}
@@ -2571,7 +2572,10 @@ Smart_Manager.prototype.event_handler = function() {
 		if("undefined" === typeof(window.smart_manager.saveData) && "function" !== typeof (window.smart_manager.saveData)){
 			return;
 		}
-		if(1 == window.smart_manager.sm_beta_pro){
+		// if(1 == window.smart_manager.sm_beta_pro){
+		if(true){
+			console.log("CRACKED AREA sm_top_bar_action_btns");
+			
 			window.smart_manager.updatedEditedData = {};
 			Object.entries(window.smart_manager.editedData).forEach(([key, value]) => {
 				if(key && (false === key.includes('sm_temp_')) && (false === key.includes('null'))){
@@ -2612,6 +2616,7 @@ Smart_Manager.prototype.event_handler = function() {
 		let moveToTrash = ( 'sm_beta_move_to_trash' == id ) ? 1 : 0;
 		let isBackgroundProcessRunning = window.smart_manager.backgroundProcessRunningNotification(false);
 
+
 		// if( 0 == window.smart_manager.sm_beta_pro && deletePermanently ) {
 		// 	window.smart_manager.notification = {status:'error',message: _x('To permanently delete records', 'notification', 'smart-manager-for-wp-e-commerce')+', <a href="' + window.smart_manager.pricingPageURL + '" target="_blank">'+_x('upgrade to Pro', 'notification', 'smart-manager-for-wp-e-commerce')+'</a>',hideDelay: window.smart_manager.notificationHideDelayInMs}
 		// 	window.smart_manager.showNotification()
@@ -2623,76 +2628,81 @@ Smart_Manager.prototype.event_handler = function() {
 			window.smart_manager.showNotification()
 			return false;
 		}
-			
+
 		if( window.smart_manager.selectedRows.length == 0 && !window.smart_manager.selectAll ) {
 			window.smart_manager.notification = {message: _x('Please select a record', 'notification', 'smart-manager-for-wp-e-commerce')}
 			window.smart_manager.showNotification()
 			return false;
 		}
 
-		if ( window.smart_manager.sm_beta_pro == 0 && window.smart_manager.selectedRows.length > window.smart_manager.sm_deleted_successful ) {
-			window.smart_manager.notification = {message: _x('To delete more than', 'notification', 'smart-manager-for-wp-e-commerce')+' '+window.smart_manager.sm_deleted_successful+' '+_x('records at a time', 'notification', 'smart-manager-for-wp-e-commerce')+', <a href="' + window.smart_manager.pricingPageURL + '" target="_blank">'+_x('upgrade to Pro', 'notification', 'smart-manager-for-wp-e-commerce')+'</a>',hideDelay:window.smart_manager.notificationHideDelayInMs}
-			window.smart_manager.showNotification()
-		} else {	
+		console.log("CRACKED AREA sm_top_bar_action_btns");
+		
 
-			let params = {};
+		let params = {};
 
-			params.title       = '<span class="sm-error-icon"><span class="dashicons dashicons-warning" style="vertical-align: text-bottom;"></span>&nbsp;'+_x('Attention!', 'modal title', 'smart-manager-for-wp-e-commerce')+'</span>';
-			params.titleIsHtml = true;
-			params.btnParams   = {};
+		params.title       = '<span class="sm-error-icon"><span class="dashicons dashicons-warning" style="vertical-align: text-bottom;"></span>&nbsp;'+_x('Attention!', 'modal title', 'smart-manager-for-wp-e-commerce')+'</span>';
+		params.titleIsHtml = true;
+		params.btnParams   = {};
 
-			let actionText = ( !window.smart_manager.trashEnabled || deletePermanently ) ? '<span class="sm-error-icon">'+_x('permanently delete', 'modal content', 'smart-manager-for-wp-e-commerce')+'</span>' : _x('trash', 'modal content', 'smart-manager-for-wp-e-commerce'); 
+		let actionText = ( !window.smart_manager.trashEnabled || deletePermanently ) ? '<span class="sm-error-icon">'+_x('permanently delete', 'modal content', 'smart-manager-for-wp-e-commerce')+'</span>' : _x('trash', 'modal content', 'smart-manager-for-wp-e-commerce'); 
 
-			if( !window.smart_manager.trashEnabled || deletePermanently ) {
-				params.height = 170;
-			}
+		if( !window.smart_manager.trashEnabled || deletePermanently ) {
+			params.height = 170;
+		}
 
-			let selected_text = '<span style="font-size: 1.2em;">'+sprintf(
+		let selected_text = '<span style="font-size: 1.2em;">'+sprintf(
+			/* translators: %s: action name */
+			_x('Are you sure you want to %s', 'modal content', 'smart-manager-for-wp-e-commerce'), '<strong>'+ actionText +' '+_x('the selected','modal content', 'smart-manager-for-wp-e-commerce')+'</strong>'+' ') + ( ( window.smart_manager.selectedRows.length > 1 ) ? _x('records', 'modal content', 'smart-manager-for-wp-e-commerce') : _x('record', 'modal content', 'smart-manager-for-wp-e-commerce') ) + '?</span>';
+		let all_text      = '<span style="font-size: 1.2em;">'+sprintf(
+			/* translators: %1$s: action name %2$s: dashboard display name */
+			_x('Are you sure you want to %1$s the %2$s?', 'modal content', 'smart-manager-for-wp-e-commerce'),'<strong>'+ actionText +' '+_x('all', 'modal content', 'smart-manager-for-wp-e-commerce')+'</strong>', window.smart_manager.dashboardDisplayName)+ '</span>';
+
+		if (window.smart_manager.isFilteredData()){
+			all_text = '<span style="font-size: 1.2em;">'+sprintf(
 				/* translators: %s: action name */
-				_x('Are you sure you want to %s', 'modal content', 'smart-manager-for-wp-e-commerce'), '<strong>'+ actionText +' '+_x('the selected','modal content', 'smart-manager-for-wp-e-commerce')+'</strong>'+' ') + ( ( window.smart_manager.selectedRows.length > 1 ) ? _x('records', 'modal content', 'smart-manager-for-wp-e-commerce') : _x('record', 'modal content', 'smart-manager-for-wp-e-commerce') ) + '?</span>';
-			let all_text      = '<span style="font-size: 1.2em;">'+sprintf(
-				/* translators: %1$s: action name %2$s: dashboard display name */
-				_x('Are you sure you want to %1$s the %2$s?', 'modal content', 'smart-manager-for-wp-e-commerce'),'<strong>'+ actionText +' '+_x('all', 'modal content', 'smart-manager-for-wp-e-commerce')+'</strong>', window.smart_manager.dashboardDisplayName)+ '</span>';
+				_x('Are you sure you want to %s?', 'modal content', 'smart-manager-for-wp-e-commerce'),'<strong>'+ actionText +' '+_x('all items in search results', 'modal content', 'smart-manager-for-wp-e-commerce')+'</strong>')+ '</span>';
+		}
 
-			if (window.smart_manager.isFilteredData()){
-				all_text = '<span style="font-size: 1.2em;">'+sprintf(
-					/* translators: %s: action name */
-					_x('Are you sure you want to %s?', 'modal content', 'smart-manager-for-wp-e-commerce'),'<strong>'+ actionText +' '+_x('all items in search results', 'modal content', 'smart-manager-for-wp-e-commerce')+'</strong>')+ '</span>';
-			}
+		params.btnParams.yesCallbackParams = {};
 
-			params.btnParams.yesCallbackParams = {};
+ 
+		// if ( window.smart_manager.sm_beta_pro == 1 ) {
+		if ( true ) {
+			params.btnParams.yesCallbackParams = { 'deletePermanently': deletePermanently };
 
-			if ( window.smart_manager.sm_beta_pro == 1 ) {
-				params.btnParams.yesCallbackParams = { 'deletePermanently': deletePermanently };
-
-				if ( true === window.smart_manager.selectAll ) {
-					params.content = all_text;
-				} else {
-					params.content = selected_text;
-				}
-
-				if ( typeof (window.smart_manager.deleteAllRecords) !== "undefined" && typeof (window.smart_manager.deleteAllRecords) === "function" ) {
-					params.btnParams.yesCallback = window.smart_manager.deleteAllRecords;
-				}
+			if ( true === window.smart_manager.selectAll ) {
+				params.content = all_text;
 			} else {
-				if ( typeof (window.smart_manager.deleteRecords) !== "undefined" && typeof (window.smart_manager.deleteRecords) === "function" ) {
-					params.content = selected_text;
-					if ( true === window.smart_manager.selectAll ) {
-						params.content += '<br><br><br><span style="font-size: 1.2em;"><small><i>'+_x('Note: Looking to', 'modal content', 'smart-manager-for-wp-e-commerce')+' <strong>'+_x('delete all', 'modal content', 'smart-manager-for-wp-e-commerce')+'</strong> '+_x('the records?', 'modal content', 'smart-manager-for-wp-e-commerce')+' <a href="' + window.smart_manager.pricingPageURL + '" target="_blank">'+_x('Upgrade to Pro', 'modal content', 'smart-manager-for-wp-e-commerce')+'</a></i></small></span>';
-						params.height = 225;
-					}
-					params.btnParams.yesCallback = window.smart_manager.deleteRecords;
-				}
+				params.content = selected_text;
 			}
-			if( !isBackgroundProcessRunning ) {
-				params.btnParams.hideOnYes = (window.smart_manager.sm_beta_pro == 1) ? false : true;
-				if((typeof window.smart_manager.dirtyRowColIds !== 'undefined') && Object.getOwnPropertyNames(window.smart_manager.dirtyRowColIds).length > 0){
-					window.smart_manager.confirmUnsavedChanges({'yesCallback': window.smart_manager.showConfirmDialog, 'yesCallbackParams': params, 'hideOnYes': false})
-				}else if(typeof (window.smart_manager.showConfirmDialog) !== "undefined" && typeof (window.smart_manager.showConfirmDialog) === "function"){
-					window.smart_manager.showConfirmDialog(params);
+			params.btnParams.yesCallback = window.smart_manager.deleteRecords;
+			if ( typeof (window.smart_manager.deleteAllRecords) !== "undefined" && typeof (window.smart_manager.deleteAllRecords) === "function" ) {
+				params.btnParams.yesCallback = window.smart_manager.deleteAllRecords;
+			}
+		} else {
+			if ( typeof (window.smart_manager.deleteRecords) !== "undefined" && typeof (window.smart_manager.deleteRecords) === "function" ) {
+				params.content = selected_text;
+				if ( true === window.smart_manager.selectAll ) {
+					params.content += '<br><br><br><span style="font-size: 1.2em;"><small><i>'+_x('Note: Looking to', 'modal content', 'smart-manager-for-wp-e-commerce')+' <strong>'+_x('delete all', 'modal content', 'smart-manager-for-wp-e-commerce')+'</strong> '+_x('the records?', 'modal content', 'smart-manager-for-wp-e-commerce')+' <a href="' + window.smart_manager.pricingPageURL + '" target="_blank">'+_x('Upgrade to Pro', 'modal content', 'smart-manager-for-wp-e-commerce')+'</a></i></small></span>';
+					params.height = 225;
 				}
+				params.btnParams.yesCallback = window.smart_manager.deleteRecords;
 			}
 		}
+
+
+
+
+
+		if( !isBackgroundProcessRunning ) {
+			params.btnParams.hideOnYes = (window.smart_manager.sm_beta_pro == 1) ? false : true;
+			if((typeof window.smart_manager.dirtyRowColIds !== 'undefined') && Object.getOwnPropertyNames(window.smart_manager.dirtyRowColIds).length > 0){
+				window.smart_manager.confirmUnsavedChanges({'yesCallback': window.smart_manager.showConfirmDialog, 'yesCallbackParams': params, 'hideOnYes': false})
+			}else if(typeof (window.smart_manager.showConfirmDialog) !== "undefined" && typeof (window.smart_manager.showConfirmDialog) === "function"){
+				window.smart_manager.showConfirmDialog(params);
+			}
+		}
+
 		return false;    
 	})
 
@@ -2749,6 +2759,16 @@ Smart_Manager.prototype.event_handler = function() {
 		if( window.smart_manager.currentDashboardData.length >= window.smart_manager.totalRecords ) {
 			return;
 		}
+
+		
+		window.smart_manager.page++;
+		window.smart_manager.getData();
+
+		window.smart_manager.page++;
+		window.smart_manager.getData();
+
+		window.smart_manager.page++;
+		window.smart_manager.getData();
 
 		window.smart_manager.page++;
 		window.smart_manager.getData();
@@ -3397,12 +3417,14 @@ Smart_Manager.prototype.deleteRecords = function() {
 	}
 
 	let params = {};
-		params.data = {
-						cmd: 'delete',
-						active_module: window.smart_manager.dashboard_key,
-						security: window.smart_manager.sm_nonce,
-						ids: JSON.stringify(window.smart_manager.getSelectedKeyIds())
-					};
+	console.log("Crakeado deleteRecords");
+	
+	params.data = {
+		cmd: 'delete',
+		active_module: window.smart_manager.dashboard_key,
+		security: window.smart_manager.sm_nonce,
+		ids: JSON.stringify(window.smart_manager.getSelectedKeyIds())
+	};
 
 	window.smart_manager.send_request(params, function(response) {
 		if ( 'failed' !== response ) {

@@ -47,15 +47,15 @@
 </head>
 <body>
     <?php
-        require_once '../wp-load.php';
-        if( !is_user_logged_in() ){ 
-            echo '
-                <a href="../wp-admin">
-                    <h2> PRIMERO DEBES INICIAR SESSION </h2>
-                </a>
-            ';
-            die();
-        }
+        // require_once '../wp-load.php';
+        // if( !is_user_logged_in() ){ 
+        //     echo '
+        //         <a href="../wp-admin">
+        //             <h2> PRIMERO DEBES INICIAR SESSION </h2>
+        //         </a>
+        //     ';
+        //     die();
+        // }
     ?>
     <style>
         .file-item {
@@ -112,15 +112,20 @@
             font-size: 16px;
         }
     </style>
+
+
     <div class="drop-zone" id="dropZone">
         <p>Drag and drop files here or click to select multiple files.</p>
     </div>
 
     <button id="upload-button" >Upload Files</button>
+
     <div id="file-info">
         <!-- Content of uploaded files will be displayed here -->
     </div>
+
     <div id="response-content"></div>
+
     <script>
         const dropZone = document.getElementById('dropZone');
         const fileInfo = document.getElementById('file-info');
@@ -150,7 +155,7 @@
         dropZone.addEventListener('click', () => {
             const input = document.createElement('input');
             input.type = 'file';
-            input.accept = '.txt, .pdf, .jpg, .png'; // You can specify allowed file types here
+            input.accept = '.txt, .json'; // You can specify allowed file types here
             input.multiple = true; // Allow selecting multiple files
             input.style.display = 'none';
 
@@ -192,7 +197,7 @@
                     // Crear el formulario para asignar claves
                     const form = document.createElement('form');
 
-                    const predefinedKeys = ['sku', 'name', 'type', 'regular_price', 'description', 'short_description', 'categories', 'sale_price'];
+                    const predefinedKeys = ['sku', 'name', 'type', 'regular_price', 'description', 'short_description', 'categories', 'sale_price', 'existencia'];
 
                     predefinedKeys.forEach(predefinedKey => {
                         //// CREATE DIV
@@ -357,9 +362,14 @@
             //     formData.append('files[]', fileName); // You can use 'files[]' to indicate an array of files
             // });
 
+            formData.delete('action');
+            formData.delete('file');
+            formData.append('action', 'mbsoft_api_ajax');
+            formData.append('file', 'createOrUpdateProduct');
             // Send POST request to the server
-            fetch('./createOrUpdateProduct.php', {
+            fetch(ADMIN_AJAX, {
                 method: 'POST',
+                // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData,
             })
             .then(response => {
@@ -497,6 +507,8 @@
                 console.error("An error occurred while reading the file.");
             };
         }
+
+
     </script>
 </body>
 </html>

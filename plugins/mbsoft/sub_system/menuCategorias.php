@@ -2,8 +2,10 @@
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 
-// require_once "RequestHistory.php";
-require_once('../wp-load.php');
+require_once(ABSPATH . 'wp-load.php');
+
+
+
 
 function add_sub_item_to_nav_menu($menu_id, $parent_item_id, $category_name, $id_category) {
 

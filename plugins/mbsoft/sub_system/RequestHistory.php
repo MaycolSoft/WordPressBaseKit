@@ -2,8 +2,18 @@
 date_default_timezone_set('America/Santo_Domingo'); 
 
 ////////////////////////////////////////////////////////////////////////////////
-$scriptPath = __FILE__;
-$dbPath = dirname($scriptPath) . DIRECTORY_SEPARATOR . "database.sqlite";
+
+function connecttodatabase() {
+    $scriptPath = __FILE__;
+    $dbPath = dirname($scriptPath) . DIRECTORY_SEPARATOR . "database.sqlite";
+    if (!is_writable(dirname($dbPath))) {
+        die("El directorio " . dirname($dbPath) . " no es escribible.");
+    }
+
+    return new Sqlite3($dbPath);
+}
+
+
 
 $requiring_file = "GENERIC";
 if(isset($_SERVER["SCRIPT_FILENAME"]) || !empty($_SERVER["SCRIPT_FILENAME"])){
@@ -13,10 +23,8 @@ if(isset($_SERVER["SCRIPT_FILENAME"]) || !empty($_SERVER["SCRIPT_FILENAME"])){
 
 function createTableIfNotExistsThrottle() {
     try {
-        global $dbPath;
-
         // Abre la conexión a la base de datos SQLite
-        $db = new SQLite3($dbPath);
+        $db = connecttodatabase();
 
         // Define la sentencia SQL para crear la tabla si no existe
         $sql = "CREATE TABLE IF NOT EXISTS throttle_control (
@@ -52,8 +60,7 @@ function createTableIfNotExistsThrottle() {
 }
 
 function createFilesInfoTable() {
-    global $dbPath;
-    $db = new SQLite3($dbPath);
+    $db = connecttodatabase();
 
     $sql = "CREATE TABLE IF NOT EXISTS files_info (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -69,32 +76,37 @@ function createFilesInfoTable() {
 }
 
 function createFilesDatabaseAndTable() {
-    $dbPathForFiles = dirname(__FILE__) . DIRECTORY_SEPARATOR . "files_database.sqlite";
+    try{
+        $db = connecttodatabase();
+    
+        // Crea una nueva tabla para almacenar la información de los archivos
+        $sql = "CREATE TABLE IF NOT EXISTS files_data (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            webhook_id INTEGER,
+            filename TEXT,
+            filetype TEXT,
+            filesize INTEGER,
+            filecontent BLOB
+        )";
+    
+        $db->exec($sql);
+        $db->close();
+    
 
-    $db = new SQLite3($dbPathForFiles);
-
-    // Crea una nueva tabla para almacenar la información de los archivos
-    $sql = "CREATE TABLE IF NOT EXISTS files_data (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        webhook_id INTEGER,
-        filename TEXT,
-        filetype TEXT,
-        filesize INTEGER,
-        filecontent BLOB
-    )";
-
-    $db->exec($sql);
-    $db->close();
-
-    return $dbPathForFiles; // Devuelve la ruta de la nueva base de datos para su uso posterior
+        $scriptPath = __FILE__;
+        $dbPath = dirname($scriptPath) . DIRECTORY_SEPARATOR . "database.sqlite";
+        if (!is_writable(dirname($dbPath))) {
+            die("El directorio " . dirname($dbPath) . " no es escribible.");
+        }
+        return $dbPath; // Devuelve la ruta de la nueva base de datos para su uso posterior
+    } catch (\Throwable $e) {
+        die("Error al crear la tabla: " . $e->getMessage());
+    }
 }
 
 function createTableIfNotExistsProducts() {
     try {
-        global $dbPath;
-        // Abre la conexión a la base de datos SQLite
-        $db = new SQLite3($dbPath);
-
+        $db = connecttodatabase();
 
 
         // Define la sentencia SQL para crear la tabla si no existe
@@ -128,10 +140,11 @@ function createTableIfNotExistsProducts() {
         $db->close();
 
         // echo "La tabla se creó correctamente o ya existía.";
-    } catch (Exception $e) {
-        // echo "Error al crear la tabla: " . $e->getMessage();
+    } catch (\Throwable $e) {
+        die("Error al crear la tabla: " . $e->getMessage());
     }
 }
+
 
 createTableIfNotExistsProducts();
 createFilesInfoTable();
@@ -155,7 +168,8 @@ function throttleControl(){
     $current_time = time();
 
     // Abre la conexión a la base de datos SQLite
-    $db = new SQLite3($dbPath);
+    $db = connecttodatabase();
+
 
     // Busca un registro existente para la IP del cliente
     $sql = "SELECT * FROM throttle_control WHERE ip = '$ip'";
@@ -195,7 +209,8 @@ function throttleControl(){
 function saveFilesInfo($webhookId) {
     global $dbPath;
     if (!empty($_FILES)) {
-        $db = new SQLite3($dbPath);
+        $db = connecttodatabase();
+
 
         foreach ($_FILES as $file) {
             $filename = $file['name'];
@@ -216,7 +231,8 @@ function saveFilesData($webhookId, $dbPath) {
         return;
     }
 
-    $db = new SQLite3($dbPath);
+    $db = connecttodatabase();
+
 
     foreach ($_FILES as $file) {
         $filename = $file['name'];
@@ -238,9 +254,10 @@ function saveFilesData($webhookId, $dbPath) {
 }
 
 function saveHistory(){
-    global $dbPath, $requiring_file;
+    global  $requiring_file;
     // Abre la conexión a la base de datos SQLite
-    $db = new SQLite3($dbPath);
+    $db = connecttodatabase();
+
 
     // Prepara los datos de la solicitud
     $method = $_SERVER['REQUEST_METHOD'];
