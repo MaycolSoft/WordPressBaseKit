@@ -198,7 +198,7 @@ class Smart_Manager {
 			}
 		}
 
-		define ( 'SMPRO', true );
+		
 		
 		if ( ! defined( 'SM_PRO_URL' ) ) {
 			define( 'SM_PRO_URL', (dirname ( SM_PLUGIN_FILE )) . '/pro/' );
