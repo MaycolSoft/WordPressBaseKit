@@ -400,7 +400,7 @@
           try {
             const inputValue = document.getElementById("modalInput").value;
 
-            const response = await fetch(ADMIN_AJAX, {
+            const response = await fetch(ajaxurl, {
               'method': 'POST',
               'body': new URLSearchParams({
                 'inputValue': inputValue,
@@ -429,7 +429,7 @@
 
             // Realizar la solicitud POST
             ;
-            const response = await fetch(ADMIN_AJAX, {
+            const response = await fetch(ajaxurl, {
               'method': 'POST',
               'body': new URLSearchParams({
                 "update": "1",
@@ -459,7 +459,7 @@
             const inputValue = document.getElementById("modalInput").value;
 
             // Realizar la solicitud POST
-            const response = await fetch(ADMIN_AJAX, {
+            const response = await fetch(ajaxurl, {
               'method': 'POST',
               'body': new URLSearchParams({
                 "reUploadImage": "1",
@@ -493,7 +493,7 @@
           try {
             const inputValue = document.getElementById("modalInput").value;
 
-            const response = await fetch(ADMIN_AJAX, {
+            const response = await fetch(ajaxurl, {
               'method': 'POST',
               'body': new URLSearchParams({
                 "viewUploadedImage": "1",
@@ -585,7 +585,7 @@
             //////////////////////////////
 
 
-            fetch(ADMIN_AJAX, {
+            fetch(ajaxurl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams({

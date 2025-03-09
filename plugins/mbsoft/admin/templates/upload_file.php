@@ -1,5 +1,5 @@
+
 <div class="btn-list">
-  <button onclick="showMbSoftView('database')">Base de Datos</button>
   <button onclick="showMbSoftView('dropDownFiles')">Archivos</button>
 </div>
 

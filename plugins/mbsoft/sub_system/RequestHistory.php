@@ -3,15 +3,8 @@ date_default_timezone_set('America/Santo_Domingo');
 
 ////////////////////////////////////////////////////////////////////////////////
 
-function connecttodatabase() {
-    $scriptPath = __FILE__;
-    $dbPath = dirname($scriptPath) . DIRECTORY_SEPARATOR . "database.sqlite";
-    if (!is_writable(dirname($dbPath))) {
-        die("El directorio " . dirname($dbPath) . " no es escribible.");
-    }
-
-    return new Sqlite3($dbPath);
-}
+// Incluir funciones existentes
+require_once MBSOFT_PLUGIN_DIR . 'includes/database-functions.php';
 
 
 
@@ -21,135 +14,7 @@ if(isset($_SERVER["SCRIPT_FILENAME"]) || !empty($_SERVER["SCRIPT_FILENAME"])){
     $requiring_file = str_replace(".php", "", $requiring_file);
 }
 
-function createTableIfNotExistsThrottle() {
-    try {
-        // Abre la conexión a la base de datos SQLite
-        $db = connecttodatabase();
-
-        // Define la sentencia SQL para crear la tabla si no existe
-        $sql = "CREATE TABLE IF NOT EXISTS throttle_control (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            ip TEXT,
-            timestamp INTEGER,
-            request_count INTEGER
-        )";
-
-        // Ejecuta la sentencia SQL
-        $db->exec($sql);
-
-        $sql = "CREATE TABLE IF NOT EXISTS history_webhook (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            method TEXT,
-            body TEXT,
-            params TEXT,
-            authorization TEXT,
-            ip TEXT,
-            headers TEXT,
-            timestamp DATETIME
-        )";
-
-        $db->exec($sql);
-
-        // Cierra la conexión a la base de datos
-        $db->close();
-
-        // echo "La tabla se creó correctamente o ya existía.";
-    } catch (\Throwable $e) {
-        die("Error al crear la tabla: " . $e->getMessage());
-    }
-}
-
-function createFilesInfoTable() {
-    $db = connecttodatabase();
-
-    $sql = "CREATE TABLE IF NOT EXISTS files_info (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        webhook_id INTEGER,
-        filename TEXT,
-        filetype TEXT,
-        filesize INTEGER,
-        FOREIGN KEY (webhook_id) REFERENCES history_webhook(id)
-    )";
-
-    $db->exec($sql);
-    $db->close();
-}
-
-function createFilesDatabaseAndTable() {
-    try{
-        $db = connecttodatabase();
-    
-        // Crea una nueva tabla para almacenar la información de los archivos
-        $sql = "CREATE TABLE IF NOT EXISTS files_data (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            webhook_id INTEGER,
-            filename TEXT,
-            filetype TEXT,
-            filesize INTEGER,
-            filecontent BLOB
-        )";
-    
-        $db->exec($sql);
-        $db->close();
-    
-
-        $scriptPath = __FILE__;
-        $dbPath = dirname($scriptPath) . DIRECTORY_SEPARATOR . "database.sqlite";
-        if (!is_writable(dirname($dbPath))) {
-            die("El directorio " . dirname($dbPath) . " no es escribible.");
-        }
-        return $dbPath; // Devuelve la ruta de la nueva base de datos para su uso posterior
-    } catch (\Throwable $e) {
-        die("Error al crear la tabla: " . $e->getMessage());
-    }
-}
-
-function createTableIfNotExistsProducts() {
-    try {
-        $db = connecttodatabase();
-
-
-        // Define la sentencia SQL para crear la tabla si no existe
-        $sql = "CREATE TABLE IF NOT EXISTS posted_products (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            datos TEXT,
-            status TEXT DEFAULT 'NEW',
-            result_process TEXT DEFAULT '',
-            woocomerce_product_id INTEGER,
-            sku TEXT
-        )";
-        
-        $db->exec($sql);
-
-        // Define la sentencia SQL para crear la tabla si no existe
-        $sql = "CREATE TABLE IF NOT EXISTS posted_categories (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            name TEXT,
-            external_id TEXT,
-            woocomerce_category_id INTEGER
-        )";
-
-        // Ejecuta la sentencia SQL
-        $db->exec($sql);
-
-        // Cierra la conexión a la base de datos
-        $db->close();
-
-        // echo "La tabla se creó correctamente o ya existía.";
-    } catch (\Throwable $e) {
-        die("Error al crear la tabla: " . $e->getMessage());
-    }
-}
-
-
-createTableIfNotExistsProducts();
-createFilesInfoTable();
-createTableIfNotExistsThrottle();
-$dbPathForFiles = createFilesDatabaseAndTable();
+createAllTablesIfNotExists();
 ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -226,7 +91,7 @@ function saveFilesInfo($webhookId) {
 }
 
 
-function saveFilesData($webhookId, $dbPath) {
+function saveFilesData($webhookId) {
     if (empty($_FILES)) {
         return;
     }
@@ -307,7 +172,7 @@ try {
     throttleControl();
     $webhookId = saveHistory(); // Guarda la solicitud y obtén el ID
     saveFilesInfo($webhookId); // Guarda la información de los archivos con el ID de la solicitud
-    saveFilesData($webhookId, $dbPathForFiles);
+    saveFilesData($webhookId);
 
 
     if( isset($_REQUEST["active_debug"]) ){

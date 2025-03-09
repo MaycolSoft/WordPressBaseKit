@@ -15,69 +15,15 @@ define('MBSOFT_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('MBSOFT_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 
-require_once 'functions.php';
+require_once MBSOFT_PLUGIN_DIR . 'includes/functions.php';
 
 
 // Incluir funcionalidades de administración si estamos en el área de admin
 if (is_admin()) {
-  require_once MBSOFT_PLUGIN_DIR . 'admin/admin-dashboard.php';
+  require_once MBSOFT_PLUGIN_DIR . 'admin/index.php';
 }
 
 
 
-
-add_shortcode('mbsoft_landing_page', 'mbsoft_shortcode_landing');
-
-
-
-
-
-
-function mbsoft_api_ajax() {
-  if(isset($_POST['view'])) {
-    $view = $_POST['view'];
-
-    $file = MBSOFT_PLUGIN_DIR . "sub_system/$view.php";
-    
-    if (file_exists($file)) {
-        ob_start();       // Inicia el buffer de salida
-        include $file;    // Ejecuta el archivo PHP
-        $content = ob_get_clean(); // Captura el contenido generado
-        echo $content;
-    } else {
-        echo "Error: Archivo no encontrado.";
-    }
-
-    wp_die();
-  }
-
-  if(isset($_POST['file']) && $_POST['file'] === 'createOrUpdateProduct'){
-    require_once MBSOFT_PLUGIN_DIR . 'sub_system/createOrUpdateProduct.php';
-    wp_die();
-  }
-
-  require_once MBSOFT_PLUGIN_DIR . 'sub_system/tabla.php';
-  wp_die();
-}
-
-add_action('wp_ajax_mbsoft_api_ajax', 'mbsoft_api_ajax');
-// add_action('wp_ajax_nopriv_mbsoft_api_ajax', 'mbsoft_api_ajax');
-
-
-
-
-
-
-// function mbsoft_custom_script() {
-//   wp_enqueue_script(
-//     'mbsoft-javascript',  
-//     plugin_dir_url( __FILE__ ) . '/js/database.js',
-//     [], 
-//     true
-//   );
-//   // wp_enqueue_style('mbsoft-style', get_template_directory_uri() . '/style.css');
-// }
-
-// add_action('wp_enqueue_scripts', 'mbsoft_custom_script');
 
 

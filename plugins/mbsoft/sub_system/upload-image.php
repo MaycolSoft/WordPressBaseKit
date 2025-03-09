@@ -11,9 +11,6 @@ $requests_per_minute=600;
 require_once "RequestHistory.php";
 require_once "GeneralFunctions.php";
 
-$scriptPath = __FILE__;
-$dbPath = dirname($scriptPath) . DIRECTORY_SEPARATOR . "database.sqlite";
-
 try {
 
 

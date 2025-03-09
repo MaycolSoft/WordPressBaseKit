@@ -367,7 +367,7 @@
             formData.append('action', 'mbsoft_api_ajax');
             formData.append('file', 'createOrUpdateProduct');
             // Send POST request to the server
-            fetch(ADMIN_AJAX, {
+            fetch(ajaxurl, {
                 method: 'POST',
                 // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData,
