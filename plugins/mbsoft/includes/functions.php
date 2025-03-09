@@ -140,55 +140,63 @@ if (is_feature_active('hide_no_image_products')) {
 
 if (is_feature_active('custom_shortcode')) {
 
-  
-  // Agrega un nuevo shortcode personalizado llamado 'custom_short_code_supert_tienda_china'
-  function custom_sale_products_shortcode($atts)
-  {
-    return "<h2>MY SHORTCUT</h2>";
+  function custom_sale_products_shortcode($atts) {
+    // Atributos predeterminados del shortcode
+    $atts = shortcode_atts(array(
+        'per_page' => '12',      // Número de productos a mostrar
+        'columns' => '4',        // Número de columnas
+        'orderby' => 'date',     // Ordenar por fecha
+        'order' => 'DESC',       // Orden descendente (los más recientes primero)
+    ), $atts, 'custom_sale_products');
 
-    // $atts = shortcode_atts(array(
-    //   'per_page' => '12',
-    //   'columns' => '4',
-    //   'orderby' => 'title',
-    //   'order' => 'ASC',
-    //   'condition' => 'meta_key=custom_field&meta_value=your_value'
-    // ), $atts, 'custom_short_code_supert_tienda_china');
-  
-    // // Parsea las condiciones adicionales
-    // $condition = shortcode_parse_atts($atts['condition']);
-  
-    // // Realiza la consulta de productos con las condiciones adicionales
-    // $products = new WP_Query(array(
-    //   'post_type' => 'product',
-    //   'posts_per_page' => $atts['per_page'],
-    //   'meta_query' => array($condition),
-    //   'orderby' => $atts['orderby'],
-    //   'order' => $atts['order']
-    // ));
-  
-    // // Comprueba si hay productos encontrados
-    // if ($products->have_posts()) {
-    //   // Inicia la salida de HTML
-    //   $output = '<ul class="products columns-' . esc_attr($atts['columns']) . '">';
-  
-    //   // Loop through products and display them
-    //   while ($products->have_posts()) {
-    //     $products->the_post();
-    //     $output .= wc_get_template_part('content', 'product');
-    //   }
-  
-    //   // Finaliza la salida de HTML
-    //   $output .= '</ul>';
-  
-    //   // Restaura el loop original de WordPress
-    //   wp_reset_postdata();
-  
-    //   return $output;
-    // }
-  
-    // return __('No products found', 'textdomain');
+    // Consulta para obtener productos en oferta
+    $args = array(
+        'post_type'      => 'product',
+        'posts_per_page' => $atts['per_page'],
+        'orderby'        => $atts['orderby'],
+        'order'          => $atts['order'],
+        'meta_query'     => array(
+            array(
+                'key'     => '_sale_price',
+                'value'   => 0,
+                'compare' => '>',
+                'type'    => 'NUMERIC',
+            ),
+        ),
+    );
+
+    $products = new WP_Query($args);
+
+    // Si hay productos en oferta
+    if ($products->have_posts()) {
+        // Inicia la salida de HTML
+        $output = '<div class="sale-products">';
+        $output .= '<h2>¡Productos en Oferta!</h2>';
+        $output .= '<ul class="products columns-' . esc_attr($atts['columns']) . '">';
+
+        // Loop para mostrar los productos
+        while ($products->have_posts()) {
+            $products->the_post();
+            $output .= wc_get_template_part('content', 'product');
+        }
+
+        $output .= '</ul>';
+        $output .= '</div>';
+
+        // Restaura el loop original de WordPress
+        wp_reset_postdata();
+
+        return $output;
+    } else {
+        // Si no hay productos en oferta, muestra un mensaje amigable
+        return '<div class="no-sale-products">' .
+               '<h2>¡Vuelve Pronto!</h2>' .
+               '<p>Actualmente no tenemos productos en oferta, pero estamos preparando algo especial para ti. ¡No te lo pierdas!</p>' .
+               '</div>';
+    }
   }
-  add_shortcode('custom_short_code_supert_tienda_china', 'custom_sale_products_shortcode');
+
+  add_shortcode('sale_products', 'custom_sale_products_shortcode');
 }
 
 
