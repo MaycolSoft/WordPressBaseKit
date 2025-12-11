@@ -1,4 +1,107 @@
+
+
 <div class="mbsoft-plugin" style="margin-top: 1rem;">
+
+
+
+<?php
+  // Función para verificar si WooCommerce está activo
+  if (!function_exists('is_woocommerce_active')) {
+      function is_woocommerce_active() {
+          if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {
+              return true;
+          }
+          if (is_multisite()) {
+              $plugins = get_site_option('active_sitewide_plugins');
+              if (isset($plugins['woocommerce/woocommerce.php'])) {
+                  return true;
+              }
+          }
+          return false;
+      }
+  }
+
+  if (!is_woocommerce_active()) {
+?>
+      <div id="mbsoft-notice-woocommerce-overlay">
+          <div id="mbsoft-notice-woocommerce-content">
+              <h2 style="color: #d63638; margin-top: 0;">🚨 Requisito del Plugin</h2>
+              <hr>
+              <p style="font-size: 1.1em;">
+                  Para utilizar las funcionalidades de este plugin, **DEBES INSTALAR Y ACTIVAR WOOCOMMERCE**.
+              </p>
+              <p>
+                  Sin WooCommerce activo, la mayoría de las características de este dashboard no funcionarán correctamente.
+              </p>
+              <a href="<?php echo esc_url(admin_url('plugin-install.php?s=WooCommerce&tab=search&type=term')); ?>" 
+                class="button button-primary button-hero" 
+                style="margin-top: 15px;">
+                  Instalar WooCommerce Ahora
+              </a>
+              <p style="margin-top: 20px; font-size: 0.9em; color: #555;">
+                  Una vez instalado, refresca esta página para acceder al dashboard.
+              </p>
+          </div>
+      </div>
+<?php
+    echo css_modal_woocommerce_plugin_only();
+  }
+
+  function css_modal_woocommerce_plugin_only() {
+      return "
+        <style>
+        /* 1. Posicionamiento del contenedor principal */
+        .mbsoft-plugin {
+            position: relative !important; /* CRÍTICO: El contenedor padre debe ser relativo */
+            /* Asegura que si el contenido es pequeño, el contenedor principal tiene altura para que el overlay lo cubra */
+            min-height: 250px; 
+        }
+
+        /* 2. Estilos para el Overlay (prefijo: mbsoft-notice-woocommerce-overlay) */
+        #mbsoft-notice-woocommerce-overlay {
+            position: absolute; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.95); 
+            z-index: 10; 
+            
+            /* PROPIEDADES DE CENTRADO */
+            display: flex;
+            justify-content: center; /* Centrado horizontal */
+            align-items: center;    /* Centrado vertical */
+            
+            text-align: center;
+            border-radius: 4px; 
+            pointer-events: all; /* Inhabilita clics en el contenido subyacente */
+            flex-wrap: wrap;
+        }
+
+        /* 3. Estilos del Contenido del Modal (prefijo: mbsoft-notice-woocommerce-content) */
+        #mbsoft-notice-woocommerce-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            max-width: 450px;
+            width: 90%;
+            z-index: 20; 
+        }
+        
+        /* 4. Estilos Opcionales para Atenuar el Contenido Interno */
+        .mbsoft-notice-woocommerce-active-.mbsoft-tabs, 
+        .mbsoft-notice-woocommerce-active-.mbsoft-tab-content {
+          filter: blur(1px);
+          pointer-events: none; /* Asegura que no se pueda hacer clic ni si el filtro falla */
+        }
+            </style>
+      ";
+    }
+
+?>
+
+
   <?php
   $current_tab = isset($_GET['tab']) ? sanitize_key($_GET['tab']) : 'features';
   $tabs = [
@@ -153,3 +256,5 @@
     });
   });
 </script>
+
+

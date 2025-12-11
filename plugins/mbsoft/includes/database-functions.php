@@ -137,6 +137,14 @@ function createAllTablesIfNotExists()
         1,
         1,
         '{"shortcode": "mbsoft_feature"}'
+      ],
+      [
+        'pay_bhd_float_button',
+        'Botón de Pago BHD',
+        'Muestra un botón flotante para hacer un pago en BHD. Utilza el shortcode [pay_bhd_float_button]',
+        0,
+        1,
+        '{"shortcode": "pay_bhd_float_button"}'
       ]
     ];
 
