@@ -17,7 +17,81 @@ function is_feature_active($feature_code)
 }
 
 
+/**
+ * Obtiene las configuraciones de una feature.
+ * @param string $feature_code El código de la feature.
+ * @return array|null Retorna un array asociativo con las configuraciones o null si falla.
+ */
+function get_feature_settings($feature_code)
+{
+  try {
+    $db = connecttodatabase();
+    $stmt = $db->prepare("SELECT settings FROM features WHERE feature_code = :code");
+    $stmt->bindValue(':code', $feature_code, SQLITE3_TEXT);
+    $result = $stmt->execute();
+    $row = $result->fetchArray(SQLITE3_ASSOC);
+    $db->close();
 
+    if ($row && $row['settings']) {
+        return json_decode($row['settings'], true);
+    }
+    return null;
+  } catch (\Throwable $e) {
+    // Loggear o manejar el error
+    return null;
+  }
+}
+
+/**
+ * Guarda las nuevas configuraciones (JSON) para una feature.
+ * @param string $feature_code El código de la feature.
+ * @param array $settings_data Array asociativo con los nuevos datos de configuración.
+ * @return bool True si se guarda correctamente, False en caso contrario.
+ */
+function save_feature_settings($feature_code, array $settings_data)
+{
+  try {
+    $db = connecttodatabase();
+
+    // 1. Obtener la configuración actual para preservar campos no enviados
+    $current_settings = get_feature_settings($feature_code);
+
+    // 2. Combinar (Merge) los datos, dando prioridad a los nuevos
+    if ($current_settings) {
+        $new_settings = array_merge($current_settings, $settings_data);
+    } else {
+        $new_settings = $settings_data;
+    }
+
+    $json_settings = json_encode($new_settings, JSON_UNESCAPED_UNICODE);
+
+    $stmt = $db->prepare("
+        UPDATE features 
+        SET settings = :settings_json, updated_at = datetime('now') 
+        WHERE feature_code = :code
+    ");
+    $stmt->bindValue(':settings_json', $json_settings, SQLITE3_TEXT);
+    $stmt->bindValue(':code', $feature_code, SQLITE3_TEXT);
+    
+    $result = $stmt->execute();
+    $db->close();
+
+    return $result !== false;
+  } catch (\Throwable $e) {
+    // Loggear o manejar el error
+    return false;
+  }
+}
+
+
+
+
+
+
+
+
+
+/////////////////////////////////// SHORTCODE ////////////////////////////
 // Agregar un shortcode para mostrar la landing page pública
 function mbsoft_shortcode_landing()
 {
@@ -27,11 +101,12 @@ function mbsoft_shortcode_landing()
 }
 
 add_shortcode('mbsoft_landing_page', 'mbsoft_shortcode_landing');
+/////////////////////////////////// SHORTCODE ////////////////////////////
 
 
 
 
-
+/////////////////////////////////// API MBSOFT ////////////////////////////
 function mbsoft_api_ajax()
 {
   if (isset($_POST['view'])) {
@@ -79,9 +154,78 @@ function mbsoft_api_ajax()
   require_once MBSOFT_PLUGIN_DIR . 'sub_system/tabla.php';
   wp_die();
 }
-
 add_action('wp_ajax_mbsoft_api_ajax', 'mbsoft_api_ajax');
-add_action('wp_ajax_nopriv_mbsoft_api_ajax', 'mbsoft_api_ajax'); // Agregado nopriv para usuarios no logueados
+/////////////////////////////////// API MBSOFT ////////////////////////////
+
+
+
+
+
+/////////////////////////////////// FEATURES FLAGS ////////////////////////////
+function mbsoft_toggle_feature_ajax() {
+  // 1. Verificación de Seguridad y Permisos
+  if ( ! isset( $_POST['feature_code'], $_POST['is_active'], $_POST['nonce'] ) || ! current_user_can( 'manage_options' ) ) {
+      wp_send_json_error( array( 'message' => 'Faltan parámetros o no tienes permisos.' ) );
+      wp_die();
+  }
+  
+  // 2. Verificación de Nonce (Seguridad)
+  if ( ! wp_verify_nonce( $_POST['nonce'], 'mbsoft_features_update' ) ) {
+      wp_send_json_error( array( 'message' => 'Verificación de seguridad fallida.' ) );
+      wp_die();
+  }
+
+  // Limpieza y Validación de Datos
+  $feature_code = sanitize_key( $_POST['feature_code'] );
+  $is_active    = intval( $_POST['is_active'] ); // 1 o 0
+
+  if ( ! preg_match( '/^[a-z0-9_]+$/', $feature_code ) ) {
+      wp_send_json_error( array( 'message' => 'Código de feature inválido.' ) );
+      wp_die();
+  }
+  
+  // 3. Conexión y Actualización a la Base de Datos
+  require_once MBSOFT_PLUGIN_DIR . 'includes/database-functions.php';
+  $db = connecttodatabase();
+  
+  try {
+      $stmt = $db->prepare( "UPDATE features SET is_active = :state WHERE feature_code = :code" );
+      $stmt->bindValue( ':state', $is_active, SQLITE3_INTEGER );
+      $stmt->bindValue( ':code', $feature_code, SQLITE3_TEXT );
+      
+      $result = $stmt->execute();
+      
+      if ( $result ) {
+          // Éxito
+          wp_send_json_success( array( 
+              'message' => "Feature $feature_code actualizado con exito.",
+              'state' => $is_active
+          ) );
+      } else {
+          // Error al ejecutar la consulta
+          wp_send_json_error( array( 'message' => 'Error al actualizar la base de datos.' ) );
+      }
+      
+  } catch (\Throwable $th) {
+      wp_send_json_error( array( 'message' => 'Excepción de DB: ' . $th->getMessage() ) );
+  } finally {
+      $db->close();
+  }
+
+  wp_die();
+}
+
+add_action('wp_ajax_mbsoft_toggle_feature', 'mbsoft_toggle_feature_ajax');
+// add_action('wp_ajax_nopriv_mbsoft_api_ajax', 'mbsoft_api_ajax'); // Agregado nopriv para usuarios no logueados
+/////////////////////////////////// FEATURES FLAGS ////////////////////////////
+
+
+
+
+
+
+
+
 
 
 
@@ -109,13 +253,15 @@ add_action('wp_ajax_nopriv_mbsoft_api_ajax', 'mbsoft_api_ajax'); // Agregado nop
 if (is_feature_active('custom_login')) {
   // Logo personalizado en login
   add_action("login_head", function ($atts) {
+    $logo_url = 'https://supertiendachina.com.do/wp-content/uploads/2023/09/cropped-LOGO-WEB-PAGE.png';
     echo "
       <style>
-          body.login #login h1 a {
-              background: url('https://supertiendachina.com.do/wp-content/uploads/2023/09/cropped-LOGO-WEB-PAGE.png') no-repeat scroll center top transparent;
-              height: 135px;
-              width: unset;
-          }
+        body.login #login h1 a {
+            background-image: url('$logo_url');
+            background-size: contain; /* Mejor que background-repeat */
+            height: 135px;
+            width: auto; /* Permite el ancho de la imagen */
+        }
       </style>
       ";
     return;
@@ -214,105 +360,36 @@ if (is_feature_active('custom_shortcode')) {
 }
 
 
+if (is_feature_active('custom_site_icon')) {
+
+    /**
+     * Filtra la URL del Site Icon (favicon) para usar una URL personalizada.
+     *
+     * @param string $url URL del Site Icon (por defecto o configurada).
+     * @param int $size Tamaño solicitado del icono.
+     * @param int $blog_id ID del sitio (solo relevante en multisitio).
+     * @return string La nueva URL personalizada.
+     */
+    add_filter('site_icon_url', function ($url, $size, $blog_id) {
+        
+        // Define la URL de tu icono personalizado
+        $custom_icon_url = 'https://supertiendachina.com.do/wp-content/uploads/2023/09/cropped-LOGO-WEB-PAGE.png'; 
+        
+        // Es una buena práctica verificar si se necesita un tamaño específico, 
+        // aunque muchos navegadores funcionan bien con la URL base.
+        // Si tu imagen es lo suficientemente grande (p. ej., 512x512), 
+        // simplemente devolvemos la URL base.
+        
+        return $custom_icon_url;
+
+    }, 10, 3);
+}
+
+
+
 
 if (is_feature_active('pay_bhd_float_button')) {
-
-    function pay_bhd_float_button_shortcode() {
-        // Enlace de destino (ejemplo: URL de tu página de pago o contacto)
-        $target_url = '#'; // **¡IMPORTANTE! Reemplaza esto con tu URL real**
-
-        // CSS en línea para el botón flotante (puedes moverlo a un archivo CSS externo para mejor práctica)
-        $css = '
-            <style>
-                @keyframes pulse-green {
-                    0% {
-                        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
-                    }
-                    70% {
-                        box-shadow: 0 0 0 20px rgba(46, 204, 113, 0);
-                    }
-                    100% {
-                        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
-                    }
-                }
-
-                .bhd-float-button {
-                    position: fixed;
-                    bottom: 20px;
-                    right: 20px;
-                    z-index: 1000; /* Asegura que esté por encima de otros elementos */
-                }
-
-                .bhd-float-button a {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background-color: #2ecc71; /* Verde brillante (similar al BHD) */
-                    color: white;
-                    padding: 15px 30px;
-                    border-radius: 50px; /* Bordes muy redondeados para un aspecto moderno */
-                    text-decoration: none;
-                    font-size: 20px;
-                    font-family: \'Montserrat\', sans-serif; /* Fuente moderna */
-                    font-weight: 700;
-                    letter-spacing: 1px;
-                    text-transform: uppercase;
-                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-                    transition: all 0.3s ease;
-                    animation: pulse-green 2s infinite; /* Animación de pulsación */
-                }
-
-                .bhd-float-button a:hover {
-                    background-color: #27ae60; /* Un verde un poco más oscuro al pasar el ratón */
-                    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 30px rgba(46, 204, 113, 0.8); /* Efecto de brillo más fuerte */
-                    transform: translateY(-2px); /* Pequeño levantamiento */
-                    animation: none; /* Detener la pulsación al hacer hover */
-                }
-            </style>
-            <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
-        ';
-
-        // Estructura HTML del botón flotante
-        $output = $css;
-        $output .= '<div class="bhd-float-button">';
-        $output .= '<a href="' . esc_url($target_url) . '" target="_blank" rel="noopener noreferrer">';
-        $output .= 'Pagar Aquí BHD';
-        $output .= '</a>';
-        $output .= '</div>';
-
-        return $output;
-    }
-
-    // Registra el shortcode
-    add_shortcode('pay_bhd_float_button', 'pay_bhd_float_button_shortcode');
-
-    // Opcional: Para asegurar que el CSS se cargue en el frontend si el shortcode no se usa en el cuerpo de una página
-    /*
-    function enqueue_pay_bhd_float_button_styles() {
-        if (has_shortcode(get_post_field('post_content', get_the_ID()), 'pay_bhd_float_button')) {
-            wp_enqueue_style('montserrat', 'https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap', array(), null);
-            // Si el CSS estuviera en un archivo separado, lo encolarías aquí
-        }
-    }
-    add_action('wp_enqueue_scripts', 'enqueue_pay_bhd_float_button_styles');
-    */
-
-
-    // **PARTE 2: ENCOLAR SCRIPT (DEBE IR EN UN ARCHIVO JS REAL)**
-    /**
-     * Encola el script JavaScript y localiza variables.
-     */
-    function pay_bhd_float_button_scripts() {
-        // Encolamos el script (asumiendo que está en una carpeta 'js' de tu plugin/tema)
-        wp_enqueue_script('bhd-button-tracker', get_template_directory_uri() . '/js/bhd-button-tracker.js', array('jquery'), null, true);
-
-        // Localizamos las variables para que el JS sepa la URL de AJAX y el nonce.
-        wp_localize_script('bhd-button-tracker', 'bhd_ajax_object', array(
-            // Usamos la acción AJAX que ya tienes
-            'ajax_action' => 'mbsoft_api_ajax',
-            'ajax_url'    => admin_url('admin-ajax.php'),
-            'nonce'       => wp_create_nonce('bhd_click_nonce') // Nonce de seguridad
-        ));
-    }
-    add_action('wp_enqueue_scripts', 'pay_bhd_float_button_scripts');
+  require_once MBSOFT_PLUGIN_DIR . 'includes/bhd_payment_gateway.php';
 }
+
+

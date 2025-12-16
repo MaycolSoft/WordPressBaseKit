@@ -1,0 +1,448 @@
+/*
+  * ----------------------------------------------------------------
+  * ESTILOS MODERNOS PARA EL FORMULARIO (Prefijado)
+  * ----------------------------------------------------------------
+  */
+
+/* Colores Base (Utilizando valores hexadecimales fijos para evitar colisión) */
+.pay-button-bhd-form-container {
+  /* Colores Claros */
+  --bhd-primary-color: #0073aa;
+  /* Azul de WordPress */
+  --bhd-accent-color: #00a0d2;
+  --bhd-card-background: #ffffff;
+  --bhd-text-color: #1d2327;
+  --bhd-border-color: #c3c4c7;
+}
+
+/* Colores Dark Mode */
+body.dark-mode .pay-button-bhd-form-container {
+  --bhd-primary-color: #3b82f6;
+  --bhd-accent-color: #60a5fa;
+  --bhd-card-background: #2d3a4e;
+  --bhd-text-color: #f1f5f9;
+  --bhd-border-color: #475569;
+}
+
+.pay-button-bhd-form-container {
+  max-width: 600px;
+  margin-top: 20px;
+  padding: 30px;
+  background: var(--bhd-card-background);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.dark-mode .pay-button-bhd-form-container {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+.pay-button-bhd-form-container h2 {
+  color: var(--bhd-primary-color);
+  border-bottom: 2px solid var(--bhd-border-color);
+  padding-bottom: 15px;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+/* Formulario Minimalista */
+.pay-button-bhd-form-modern-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pay-button-bhd-form-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.pay-button-bhd-form-group label {
+  font-weight: 500;
+  color: var(--bhd-text-color);
+  margin-bottom: 8px;
+  transition: color 0.3s ease;
+}
+
+/* Estilo de Inputs y Select */
+.pay-button-bhd-form-group input,
+.pay-button-bhd-form-group select {
+  padding: 12px 15px;
+  border: 1px solid var(--bhd-border-color);
+  border-radius: 8px;
+  font-size: 16px;
+  color: var(--bhd-text-color);
+  background-color: var(--bhd-card-background);
+  transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.pay-button-bhd-form-group input:focus,
+.pay-button-bhd-form-group select:focus {
+  border-color: var(--bhd-primary-color);
+  box-shadow: 0 0 0 1px var(--bhd-primary-color);
+}
+
+/* Estilo del Select */
+.pay-button-bhd-form-group select {
+  cursor: pointer;
+}
+
+/* Texto de Ayuda */
+.pay-button-bhd-form-help-text {
+  font-size: 12px;
+  color: #6c757d;
+  margin-top: 5px;
+}
+
+body.dark-mode .pay-button-bhd-form-help-text {
+  color: #94a3b8;
+}
+
+/* Botón de Submit con Animación */
+.pay-button-bhd-form-submit-button {
+  background-color: var(--bhd-primary-color);
+  color: #ffffff;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pay-button-bhd-form-submit-button:hover {
+  background-color: var(--bhd-accent-color);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.pay-button-bhd-form-submit-button:active {
+  transform: scale(0.98);
+  /* Animación de pulsación */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+
+/*
+  * ----------------------------------------------------------------
+  * CÓDIGO CSS AJUSTADO PARA MEJOR DARK MODE
+  * ----------------------------------------------------------------
+  */
+
+/* Colores Base (Utilizando valores hexadecimales fijos para evitar colisión) */
+.pay-button-bhd-form-container {
+  /* Colores Claros (Sin cambios) */
+  --bhd-primary-color: #0073aa;
+  --bhd-accent-color: #00a0d2;
+  --bhd-card-background: #ffffff;
+  --bhd-text-color: #1d2327;
+  --bhd-border-color: #c3c4c7;
+
+  /* Colores Específicos para Inputs, para que se vean bien en Light Mode */
+  --bhd-input-background: #ffffff;
+}
+
+/* Colores Dark Mode: Ajustados para parecerse al tema por defecto de WP */
+body.dark-mode .pay-button-bhd-form-container {
+  --bhd-primary-color: #3b82f6;
+  --bhd-accent-color: #60a5fa;
+  --bhd-card-background: #23282d;
+  /* Fondo del contenedor: Gris Oscuro de WP Admin */
+  --bhd-text-color: #f0f6fc;
+  /* Texto: Blanco-azulado claro de WP Admin */
+  --bhd-border-color: #444;
+  /* Borde: Gris más oscuro */
+
+  --bhd-input-background: #33383c;
+  /* Fondo del Input: Gris Oscuro Ligeramente más Claro */
+}
+
+
+/* --- Selectores que usan las variables --- */
+
+.pay-button-bhd-form-container {
+  /* ... (resto del CSS del contenedor sin cambios) ... */
+  background: var(--bhd-card-background);
+}
+
+.pay-button-bhd-form-container h2 {
+  /* ... (resto del CSS del h2 sin cambios) ... */
+  border-bottom: 2px solid var(--bhd-border-color);
+}
+
+.pay-button-bhd-form-group label {
+  /* ... (resto del CSS del label sin cambios) ... */
+  color: var(--bhd-text-color);
+}
+
+/* Aplicar el color de fondo del input en ambos modos */
+.pay-button-bhd-form-group input,
+.pay-button-bhd-form-group select {
+  padding: 12px 15px;
+  border: 1px solid var(--bhd-border-color);
+  border-radius: 8px;
+  font-size: 16px;
+  color: var(--bhd-text-color);
+  /* Usar color de texto ajustado */
+  background-color: var(--bhd-input-background);
+  /* USAR EL NUEVO INPUT BACKGROUND */
+  transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.pay-button-bhd-form-group input:focus,
+.pay-button-bhd-form-group select:focus {
+  border-color: var(--bhd-primary-color);
+  box-shadow: 0 0 0 1px var(--bhd-primary-color);
+}
+
+/* Estilos para el campo con Toggle */
+.pay-button-bhd-form-has-toggle {
+  position: relative;
+}
+
+.pay-button-bhd-form-has-toggle input {
+  padding-right: 50px;
+  /* Espacio para el botón */
+}
+
+.pay-button-bhd-form-toggle-btn {
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  height: calc(100% - 2px);
+  width: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+  border-radius: 0 8px 8px 0;
+  line-height: 1;
+}
+
+.pay-button-bhd-form-toggle-btn .dashicons {
+  color: var(--bhd-border-color);
+  /* Color por defecto */
+  transition: color 0.2s ease;
+}
+
+.pay-button-bhd-form-toggle-btn:hover .dashicons {
+  color: var(--bhd-primary-color);
+}
+
+/* Estilos para el mensaje de estado (Success/Error) */
+.pay-button-bhd-form-status-message {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  font-weight: 500;
+  display: none;
+  /* Oculto por defecto */
+}
+
+.pay-button-bhd-form-status-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.pay-button-bhd-form-status-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Dark Mode status colors */
+body.dark-mode .pay-button-bhd-form-status-success {
+  background-color: #0d361c;
+  color: #92e6a4;
+  border-color: #174f2d;
+}
+
+body.dark-mode .pay-button-bhd-form-status-error {
+  background-color: #3b0000;
+  color: #f59999;
+  border-color: #5c0a0a;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ---------------------------------------
+   Mini Form – Botón de Pago BHD
+---------------------------------------- */
+
+.bhd-pay-button-container {
+    max-width: 420px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #dcdcde;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen;
+}
+
+/* Dark mode básico (si el body lo tiene) */
+body.dark-mode .bhd-pay-button-container {
+    background: #1e1e1e;
+    border-color: #3c434a;
+}
+
+/* ---------------------------------------
+   Form layout
+---------------------------------------- */
+
+.bhd-pay-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.bhd-form-group {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.bhd-form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #1d2327;
+}
+
+body.dark-mode .bhd-form-group label {
+    color: #f0f0f1;
+}
+
+/* ---------------------------------------
+   Inputs & Select
+---------------------------------------- */
+
+.bhd-form-group input,
+.bhd-form-group select {
+    padding: 10px 12px 10px 36px;
+    border-radius: 6px;
+    border: 1px solid #c3c4c7;
+    font-size: 14px;
+    background-color: #fff;
+    color: #1d2327;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+body.dark-mode .bhd-form-group input,
+body.dark-mode .bhd-form-group select {
+    background-color: #2c3338;
+    border-color: #3c434a;
+    color: #f0f0f1;
+}
+
+.bhd-form-group input:focus,
+.bhd-form-group select:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+    outline: none;
+}
+
+/* ---------------------------------------
+   Dashicons inside inputs
+---------------------------------------- */
+
+.bhd-form-group .dashicons {
+    position: absolute;
+    top: 32px;
+    left: 10px;
+    font-size: 18px;
+    color: #8c8f94;
+}
+
+body.dark-mode .bhd-form-group .dashicons {
+    color: #a7aaad;
+}
+
+/* ---------------------------------------
+   Submit Button
+---------------------------------------- */
+
+.bhd-pay-submit {
+    margin-top: 10px;
+    padding: 12px;
+    background: #2271b1;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.bhd-pay-submit:hover {
+    background: #135e96;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.bhd-pay-submit:active {
+    transform: scale(0.98);
+}
+
+.bhd-pay-submit:disabled {
+    background: #a7aaad;
+    cursor: not-allowed;
+}
+
+/* ---------------------------------------
+   Small helper text (optional)
+---------------------------------------- */
+
+.bhd-form-help {
+    font-size: 12px;
+    color: #646970;
+}
+
+body.dark-mode .bhd-form-help {
+    color: #a7aaad;
+}
+
+
+body.dark-mode .pay-button-bhd-form-textarea {
+  background-color: #33383c;
+  color: #f0f6fc;
+  border: 1px solid #444;
+}
+

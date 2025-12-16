@@ -3,7 +3,7 @@
 Plugin Name: MB Soft
 Plugin URI: http://mbsoft.com/mbsoft-plugin-wordpress
 Description: Plugin con una landing page pública y un dashboard de administración.
-Version: 1.0
+Version: 1.2.1
 Author: MB
 Author URI: http://mbsoft.com
 License: GPL2
@@ -22,8 +22,4 @@ require_once MBSOFT_PLUGIN_DIR . 'includes/functions.php';
 if (is_admin()) {
   require_once MBSOFT_PLUGIN_DIR . 'admin/index.php';
 }
-
-
-
-
 

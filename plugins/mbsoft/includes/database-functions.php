@@ -101,15 +101,15 @@ function createAllTablesIfNotExists()
 
     // Nueva tabla para features (funcionalidades)
     $db->exec("CREATE TABLE IF NOT EXISTS features (
-            feature_code TEXT PRIMARY KEY,
-            feature_name TEXT NOT NULL,
-            description TEXT,
-            is_active INTEGER DEFAULT 0 CHECK(is_active IN (0, 1)),
-            default_active INTEGER DEFAULT 0 CHECK(default_active IN (0, 1)),
-            settings TEXT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME
-        )");
+      feature_code TEXT PRIMARY KEY,
+      feature_name TEXT NOT NULL,
+      description TEXT,
+      is_active INTEGER DEFAULT 0 CHECK(is_active IN (0, 1)),
+      default_active INTEGER DEFAULT 0 CHECK(default_active IN (0, 1)),
+      settings TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME
+    )");
 
 
     // Datos iniciales
